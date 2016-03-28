@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.screens.LoadingScreen;
+import com.mygdx.game.screens.MainMenuScreen;
+import com.mygdx.game.screens.SplashScreen;
 
 public class Application extends Game {
 
@@ -16,12 +18,14 @@ public class Application extends Game {
 	public static final String TITLE = "Slidez";
 	public static final int V_WIDTH = 480;
 	public static final int V_HEIGHT = 420;
-
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
-
 	public BitmapFont font;
 	public AssetManager assets;
+
+	public LoadingScreen loadingScreen;
+	public SplashScreen splashScreen;
+	public MainMenuScreen mainMenuScreen;
 
 	@Override
 	public void create () {
@@ -29,10 +33,15 @@ public class Application extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
 		batch = new SpriteBatch();
+
 		font = new BitmapFont();
 		font.setColor(Color.CORAL);
 
-		this.setScreen(new LoadingScreen(this));
+		loadingScreen = new LoadingScreen(this);
+		splashScreen = new SplashScreen(this);
+		mainMenuScreen = new MainMenuScreen(this);
+
+		this.setScreen(loadingScreen);
 	}
 
 	@Override
@@ -46,6 +55,8 @@ public class Application extends Game {
 		batch.dispose();
 		font.dispose();
 		assets.dispose();
-		this.getScreen().dispose();
+		loadingScreen.dispose();
+		splashScreen.dispose();
+		mainMenuScreen.dispose();
 	}
 }

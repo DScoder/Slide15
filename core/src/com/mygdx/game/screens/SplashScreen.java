@@ -24,22 +24,25 @@ public class SplashScreen implements Screen {
     public SplashScreen(final Application app) {
         this.app = app;
         this.stage = new Stage(new FitViewport(Application.V_WIDTH, Application.V_HEIGHT, app.camera));
-        Gdx.input.setInputProcessor(stage);
-        Texture splashTexture = app.assets.get("Cat2.png", Texture.class);
-        splashImg = new Image(splashTexture);
-        splashImg.setSize(164,164);
-        splashImg.setOrigin(splashImg.getWidth()/2, splashImg.getHeight()/2);
-        stage.addActor(splashImg);
     }
 
     @Override
     public void show() {
+        System.out.println("SPLASH");
+        Gdx.input.setInputProcessor(stage);
+
+        Texture splashTexture = app.assets.get("Cat2.png", Texture.class);
+        splashImg = new Image(splashTexture);
+        splashImg.setSize(164,164);
+        splashImg.setOrigin(splashImg.getWidth()/2, splashImg.getHeight()/2);
         splashImg.setPosition(stage.getWidth()/2 - splashImg.getWidth()/2, stage.getHeight()/2  + splashImg.getHeight()/1.5f);
         splashImg.addAction(sequence(alpha(0f), scaleTo(.01f, .01f),
                 parallel(fadeIn(2f, Interpolation.pow2),
                         scaleTo(1f,1f,2.5f,Interpolation.pow5),
                         moveTo(stage.getWidth()/2 - splashImg.getWidth()/2, stage.getHeight()/2, 2f, Interpolation.swing)),
                 delay(1.5f, fadeOut(2f))));
+
+        stage.addActor(splashImg);
     }
 
     @Override
