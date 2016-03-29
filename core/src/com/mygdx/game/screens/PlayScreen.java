@@ -8,9 +8,11 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.Application;
@@ -32,6 +34,8 @@ public class PlayScreen implements Screen {
 
     private TextButton buttonBack;
 
+    private Label labelInfo;
+
     public PlayScreen(Application app) {
         this.app = app;
         this.stage = new Stage(new StretchViewport(Application.V_WIDTH, Application.V_HEIGHT, app.camera));
@@ -50,6 +54,7 @@ public class PlayScreen implements Screen {
         this.skin.load(Gdx.files.internal("ui/uiskin.json"));
 
         initNavigationButtons();
+        initInfoLabel();
         initGrid();
     }
 
@@ -65,11 +70,6 @@ public class PlayScreen implements Screen {
         update(delta);
 
         stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "Screen: PLAY", 20, 20);
-        app.batch.end();
-
     }
 
     @Override
@@ -111,6 +111,14 @@ public class PlayScreen implements Screen {
 
     }
 
+    private void initInfoLabel(){
+        labelInfo = new Label("Hello! Click any number tile to begin!", skin, "default");
+        labelInfo.setPosition(15, 310);
+        labelInfo.setAlignment(Align.center);
+        labelInfo.addAction(sequence(alpha(0f), delay(.5f), fadeIn(.5f)));
+        stage.addActor(labelInfo);
+    }
+
     private void initGrid() {
         Array<Integer> nums = new Array<Integer>();
         for (int i = 1; i < boardSize * boardSize; i++) {
@@ -150,6 +158,16 @@ public class PlayScreen implements Screen {
                             if (holeX == buttonX || holeY == buttonY) {
 //                                System.out.println("Button found! clicked:" + selectSlideButton.getId() + " " + buttonX + " " + buttonY);
                                 moveButtons(buttonX, buttonY);
+
+                                if(solutionFound()){
+                                    labelInfo.clear();
+                                    labelInfo.setText("Solution Found!");
+                                    labelInfo.addAction(sequence(alpha(1f), delay(3f), fadeOut(3f, Interpolation.pow5Out)));
+                                }
+                            } else {
+                                labelInfo.clear();
+                                labelInfo.setText("Invalid Move...");
+                                labelInfo.addAction(sequence(alpha(1f), delay(1f), fadeOut(1f, Interpolation.pow5Out)));
                             }
                         }
                     });
@@ -190,5 +208,25 @@ public class PlayScreen implements Screen {
                 buttonGreed[holeY][holeX] = button;
                 buttonGreed[holeY + 1][holeX] = null;
             }
+    }
+
+    private boolean solutionFound(){
+        int idCheck = 1;
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if(buttonGreed[i][j] != null) {
+                    if(buttonGreed[i][j].getId() == idCheck++){
+                        if(idCheck == 16){
+                            return true;
+                        }
+                    } else {
+                        return  false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }

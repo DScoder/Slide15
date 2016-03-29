@@ -57,11 +57,6 @@ public class LoadingScreen implements Screen {
         shapeRenderer.setColor(Color.FIREBRICK);
         shapeRenderer.rect(32, app.camera.viewportHeight/2 - 8, progress * (app.camera.viewportWidth - 64), 16);
         shapeRenderer.end();
-
-
-        app.batch.begin();
-        app.font.draw(app.batch, "Screen: LOADING",20, 20);
-        app.batch.end();
     }
 
     @Override

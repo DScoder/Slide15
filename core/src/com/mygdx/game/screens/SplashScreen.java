@@ -60,9 +60,6 @@ public class SplashScreen implements Screen {
         update(delta);
 
         stage.draw();
-        app.batch.begin();
-        app.font.draw(app.batch, "Screen: SPLASH",20, 20);
-		app.batch.end();
     }
 
     public void update(float delta){

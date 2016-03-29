@@ -61,11 +61,6 @@ public class MainMenuScreen implements Screen {
         update(delta);
 
         stage.draw();
-
-        app.batch.begin();
-        app.font.draw(app.batch, "Screen: MAIN MENU",20, 20);
-        app.batch.end();
-
     }
 
     @Override
