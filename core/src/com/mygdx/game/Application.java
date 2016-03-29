@@ -15,7 +15,7 @@ import com.mygdx.game.screens.SplashScreen;
 
 public class Application extends Game {
 
-	public static final float VERSION = .8f;
+	public static final float VERSION = .9f;
 	public static final String TITLE = "Slidez";
 	public static final int V_WIDTH = 480;
 	public static final int V_HEIGHT = 420;

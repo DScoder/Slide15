@@ -26,6 +26,7 @@ public class LoadingScreen implements Screen {
 
     private void queueAssets(){
         app.assets.load("Cat2.png", Texture.class);
+        app.assets.load("DScoder.png", Texture.class);
         app.assets.load("ui/uiskin.atlas", TextureAtlas.class);
     }
 
@@ -57,6 +58,10 @@ public class LoadingScreen implements Screen {
         shapeRenderer.setColor(Color.FIREBRICK);
         shapeRenderer.rect(32, app.camera.viewportHeight/2 - 8, progress * (app.camera.viewportWidth - 64), 16);
         shapeRenderer.end();
+
+        app.batch.begin();
+        app.font.draw(app.batch, "LOADING...", Application.V_WIDTH/2 - 30, Application.V_HEIGHT/2 + 30);
+        app.batch.end();
     }
 
     @Override

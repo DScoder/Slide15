@@ -26,7 +26,7 @@ public class MainMenuScreen implements Screen {
     private Stage stage;
     private Skin skin;
 
-    private TextButton playButton, exitButton;
+    private TextButton playButton, exitButton, aboutButton;
 
     public MainMenuScreen(final Application app) {
         this.app = app;
@@ -102,8 +102,19 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        aboutButton = new TextButton("About", skin, "default");
+        aboutButton.setPosition(110, 190);
+        aboutButton.setSize(280, 60);
+        aboutButton.addAction(sequence(alpha(0f), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        aboutButton.addListener( new ClickListener(){
+            @Override
+            public  void clicked(InputEvent event, float x, float y){
+                app.setScreen(app.splashScreen);
+            }
+        });
+
         exitButton = new TextButton("Exit", skin, "default");
-        exitButton.setPosition(110, 190);
+        exitButton.setPosition(110, 120);
         exitButton.setSize(280, 60);
         exitButton.addAction(sequence(alpha(0f), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         exitButton.addListener( new ClickListener(){
@@ -114,6 +125,8 @@ public class MainMenuScreen implements Screen {
         });
 
         stage.addActor(playButton);
+        stage.addActor(aboutButton);
         stage.addActor(exitButton);
+
     }
 }
