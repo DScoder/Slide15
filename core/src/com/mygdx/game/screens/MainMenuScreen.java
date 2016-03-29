@@ -3,8 +3,13 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Application;
 
@@ -16,6 +21,9 @@ public class MainMenuScreen implements Screen {
     private final Application app;
     private ShapeRenderer shapeRenderer;
     private Stage stage;
+    private Skin skin;
+
+    private TextButton playButton, exitButton;
 
     public MainMenuScreen(final Application app) {
         this.app = app;
@@ -26,10 +34,17 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         System.out.println("MENU");
+        Gdx.input.setInputProcessor(stage);
+        this.skin = new Skin();
+        this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
+        this.skin.add("default-font", app.font);
+        this.skin.load(Gdx.files.internal("ui/uiskin.json"));
+
+        initButtons();
     }
 
     private void update(float delta){
-
+        stage.act(delta);
     }
 
     @Override
@@ -38,6 +53,8 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(delta);
+
+        stage.draw();
 
         app.batch.begin();
         app.font.draw(app.batch, "Screen: MAIN MENU",20, 20);
@@ -69,5 +86,23 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         stage.dispose();
         shapeRenderer.dispose();
+    }
+
+    private  void initButtons(){
+        playButton = new TextButton("Play", skin, "default");
+        playButton.setPosition(110, 260);
+        playButton.setSize(280, 60);
+        exitButton = new TextButton("Exit", skin, "default");
+        exitButton.setPosition(110, 190);
+        exitButton.setSize(280, 60);
+        exitButton.addListener( new ClickListener(){
+            @Override
+            public  void clicked(InputEvent event, float x, float y){
+                Gdx.app.exit();
+            }
+        });
+
+        stage.addActor(playButton);
+        stage.addActor(exitButton);
     }
 }

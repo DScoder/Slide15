@@ -31,6 +31,13 @@ public class SplashScreen implements Screen {
         System.out.println("SPLASH");
         Gdx.input.setInputProcessor(stage);
 
+        Runnable transitionRunnable = new Runnable() {
+            @Override
+            public void run() {
+                app.setScreen(app.mainMenuScreen);
+            }
+        };
+
         Texture splashTexture = app.assets.get("Cat2.png", Texture.class);
         splashImg = new Image(splashTexture);
         splashImg.setSize(164,164);
@@ -40,7 +47,7 @@ public class SplashScreen implements Screen {
                 parallel(fadeIn(2f, Interpolation.pow2),
                         scaleTo(1f,1f,2.5f,Interpolation.pow5),
                         moveTo(stage.getWidth()/2 - splashImg.getWidth()/2, stage.getHeight()/2, 2f, Interpolation.swing)),
-                delay(1.5f, fadeOut(2f))));
+                delay(1.5f), fadeOut(2f), run(transitionRunnable)));
 
         stage.addActor(splashImg);
     }
