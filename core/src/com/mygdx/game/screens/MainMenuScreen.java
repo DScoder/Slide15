@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Application;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * Created by DScoder on 28.03.2016.
@@ -35,6 +38,9 @@ public class MainMenuScreen implements Screen {
     public void show() {
         System.out.println("MENU");
         Gdx.input.setInputProcessor(stage);
+        stage.clear();
+
+
         this.skin = new Skin();
         this.skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
         this.skin.add("default-font", app.font);
@@ -92,9 +98,19 @@ public class MainMenuScreen implements Screen {
         playButton = new TextButton("Play", skin, "default");
         playButton.setPosition(110, 260);
         playButton.setSize(280, 60);
+        playButton.addAction(sequence(alpha(0f), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
+        playButton.addListener( new ClickListener(){
+            @Override
+            public  void clicked(InputEvent event, float x, float y){
+                app.setScreen(app.playScreen);
+
+            }
+        });
+
         exitButton = new TextButton("Exit", skin, "default");
         exitButton.setPosition(110, 190);
         exitButton.setSize(280, 60);
+        exitButton.addAction(sequence(alpha(0f), parallel(fadeIn(.5f), moveBy(0, -20, .5f, Interpolation.pow5Out))));
         exitButton.addListener( new ClickListener(){
             @Override
             public  void clicked(InputEvent event, float x, float y){
